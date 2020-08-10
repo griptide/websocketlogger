@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>详细日志</title>
+<script src="../js/jquery.js"></script>
+<style>
+	html,body
+	{
+		height:100%;
+		width:100%;
+	}
+</style>
+</head>
+<body>
+    <div id="log-container" style="height: 100%; overflow-y: scroll; background: #333; color: #aaa; padding: 10px;">
+        <div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function() {
+        // 指定websocket路径
+        var websocket = new WebSocket('ws://localhost:8080/w/ws.do');
+        websocket.onmessage = function(event) {
+            // 接收服务端的实时日志并添加到HTML页面中
+            $("#log-container div").append(event.data + "<p> </p>");
+            // 滚动条滚动到最低部
+            $("#log-container").scrollTop($("#log-container div").height() - $("#log-container").height());
+        };
+    });
+
+    /**
+     * 如果浏览器不支持websocket则改为sockjs
+     */
+    //    function connect() {    //连接服务器函数
+//
+//        var socket = new SockJS(" URL ");   //URL需要连接的地址
+//
+//        stompClient = Stomp.over(socket);
+//
+//        stompClient.connect({}, function(frame) {
+//
+//            console.log('Connected: ' + frame)； //连接服务器成功
+//
+//            //通过stompClient.subscribe订阅/topic/getResponse 目标(destination)发送的消息
+//
+//            //一对多
+//
+//            stompClient.subscribe('/topic/getResponse',function(response){
+//
+//                showResponse(JSON.parse(response.body));
+//
+//            });
+//
+//            //一对一订阅个人信息
+//            // stompClient.subscribe('/user/' + userId + '/queue/getResponse',function(response){
+//
+//            //     var code=JSON.parse(response.body);
+//
+//            //     showResponse(code)
+//
+//            // });
+//
+//        });
+//
+//    }
+//
+//    //关闭双通道
+//
+//    function disconnect(){
+//
+//        if(stompClient != null) {
+//
+//            stompClient.disconnect();
+//
+//        }
+//
+//    }
+//
+//    function showResponse(message){
+//
+//        展示返回的信息
+//
+//    }
+</script>
+</body>
+</html>
